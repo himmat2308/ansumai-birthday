@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Ansumai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0b0f24;
+    --bg-mid:#161b3a;
+    --bg-card:#1d2348;
+    --gold:#e8b454;
+    --gold-soft:#f3d189;
+    --rose:#e2726e;
+    --cream:#f4f1e8;
+    --muted:#8b90b3;
+    --line: rgba(244,241,232,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-deep);
+    color:var(--cream);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  .display{ font-family:'Fraunces', serif; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  /* ---------- Starfield ---------- */
+  #stars{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+  }
+  .star{
+    position:absolute; border-radius:50%;
+    background:var(--cream);
+    opacity:0.7;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:0.15; }
+    50%{ opacity:0.9; }
+  }
+  .heart{
+    position:absolute;
+    bottom:-40px;
+    color: var(--rose);
+    opacity:0;
+    font-size: 14px;
+    animation: float-up linear infinite;
+  }
+  @keyframes float-up{
+    0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.55; }
+    90%{ opacity:0.35; }
+    100%{ transform: translateY(-110vh) translateX(var(--drift, 20px)) rotate(20deg); opacity:0; }
+  }
+  .reveal-on-scroll{
+    opacity:0;
+    transform: translateY(24px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal-on-scroll.in-view{
+    opacity:1;
+    transform: translateY(0);
+  }
+  .heartbeat{
+    display:inline-block;
+    animation: beat 1.6s ease-in-out infinite;
+  }
+  @keyframes beat{
+    0%, 100%{ transform: scale(1); }
+    25%{ transform: scale(1.18); }
+    40%{ transform: scale(1); }
+  }
+  .shooting-star{
+    position:absolute;
+    width:2px; height:2px;
+    background:linear-gradient(90deg, var(--gold), transparent);
+    border-radius:50%;
+    filter: drop-shadow(0 0 6px var(--gold-soft));
+    animation: shoot 6s linear infinite;
+    animation-delay: 3s;
+  }
+  @keyframes shoot{
+    0%{ transform: translate(-10vw, -10vh) scaleX(1); opacity:0; }
+    2%{ opacity:1; }
+    18%{ transform: translate(60vw, 55vh) scaleX(1); opacity:0; }
+    100%{ opacity:0; }
+  }
+
+  section{
+    position:relative; z-index:1;
+    padding: 7rem 1.5rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Hero ---------- */
+  #hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding-top:4rem; padding-bottom:4rem;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--gold);
+    margin-bottom:1.4rem;
+  }
+  h1.hero-title{
+    font-size: clamp(2.6rem, 8vw, 5rem);
+    font-style:italic;
+    font-weight:500;
+    line-height:1.05;
+    margin:0 0 1rem;
+    color:var(--cream);
+  }
+  .hero-sub{
+    color:var(--muted);
+    font-size:1.05rem;
+    max-width:34ch;
+    margin: 0 auto 3.2rem;
+  }
+
+  .countdown{
+    display:flex; gap: clamp(0.8rem, 3vw, 2rem);
+    justify-content:center;
+  }
+  .cd-unit{
+    display:flex; flex-direction:column; align-items:center;
+    min-width:64px;
+  }
+  .cd-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size: clamp(1.8rem, 6vw, 3.2rem);
+    font-weight:700;
+    color:var(--gold);
+    line-height:1;
+    font-variant-numeric: tabular-nums;
+  }
+  .cd-label{
+    margin-top:0.5rem;
+    font-size:0.68rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .cd-sep{
+    font-family:'JetBrains Mono', monospace;
+    font-size: clamp(1.8rem, 6vw, 3.2rem);
+    color: var(--line);
+    align-self:flex-start;
+    margin-top: -2px;
+  }
+
+  .scroll-hint{
+    margin-top:4rem;
+    font-size:0.75rem;
+    color:var(--muted);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    animation: bob 2.6s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); opacity:0.6; }
+    50%{ transform:translateY(6px); opacity:1; }
+  }
+
+  /* ---------- Section headers ---------- */
+  .section-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:0.8rem;
+    display:block;
+  }
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0 0 2rem;
+    color:var(--cream);
+  }
+
+  /* ---------- Letter ---------- */
+  .letter-card{
+    background: linear-gradient(180deg, var(--bg-card), var(--bg-mid));
+    border:1px solid var(--line);
+    border-radius: 4px;
+    padding: clamp(1.8rem, 5vw, 3.2rem);
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
+  }
+  .letter-open{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.4rem;
+    color:var(--gold-soft);
+    margin: 0 0 1.4rem;
+  }
+  .letter-body p{
+    font-size:1.02rem;
+    line-height:1.85;
+    color: rgba(244,241,232,0.88);
+    margin: 0 0 1.2rem;
+  }
+  .letter-sign{
+    margin-top:1.6rem;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--rose);
+    text-align:right;
+  }
+  .editme{
+    border-bottom: 1px dashed var(--muted);
+  }
+
+  /* ---------- Field notes / timeline ---------- */
+  .timeline{
+    border-left: 1px solid var(--line);
+    margin-left: 0.4rem;
+    padding-left: clamp(1.4rem, 4vw, 2.4rem);
+  }
+  .entry{
+    position:relative;
+    padding-bottom: 2.6rem;
+  }
+  .entry:last-child{ padding-bottom:0; }
+  .entry::before{
+    content:'';
+    position:absolute;
+    left: calc(-1.4rem - 5px);
+    top: 0.35rem;
+    width:9px; height:9px;
+    border-radius:50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px var(--bg-deep), 0 0 0 5px var(--line);
+  }
+  @media (min-width:640px){
+    .entry::before{ left: calc(-2.4rem - 5px); }
+  }
+  .entry-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-bottom:0.4rem;
+  }
+  .entry-title{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    font-weight:600;
+    color:var(--cream);
+    margin: 0 0 0.5rem;
+  }
+  .entry-body{
+    color: rgba(244,241,232,0.75);
+    line-height:1.7;
+    font-size:0.96rem;
+  }
+
+  /* ---------- Reveal ---------- */
+  #reveal{
+    text-align:center;
+    display:none;
+  }
+  #reveal.show{ display:block; }
+  .reveal-title{
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    font-style:italic;
+    color:var(--gold);
+    margin-bottom:1rem;
+  }
+  .reveal-sub{
+    color:var(--muted);
+    max-width:36ch;
+    margin: 0 auto 2rem;
+  }
+  .confetti-piece{
+    position:fixed;
+    top:-10px;
+    z-index:5;
+    pointer-events:none;
+    border-radius:1px;
+  }
+
+  #locked-note{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.9rem;
+  }
+
+  /* ---------- Gift box ---------- */
+  .gift-wrap{
+    position:relative;
+    height:240px;
+    margin-top:1rem;
+  }
+  .gift-box{
+    position:absolute;
+    top:80px; left:50%;
+    transform: translateX(-50%);
+    width:140px; height:84px;
+    cursor:pointer;
+  }
+  .gift-box:focus-visible{ outline:2px solid var(--gold); outline-offset:6px; }
+  .gift-body{
+    position:absolute;
+    bottom:0; left:0;
+    width:100%; height:78px;
+    border-radius:8px;
+    background:
+      linear-gradient(90deg, transparent calc(50% - 8px), var(--gold) calc(50% - 8px), var(--gold) calc(50% + 8px), transparent calc(50% + 8px)),
+      linear-gradient(180deg, var(--rose), #c25551);
+    box-shadow: 0 24px 40px -22px rgba(0,0,0,0.65);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transform-origin: bottom center;
+  }
+  .gift-lid{
+    position:absolute;
+    top:0; left:-6px;
+    width:152px; height:24px;
+    border-radius:6px;
+    background:
+      linear-gradient(90deg, transparent calc(50% - 8px), var(--gold) calc(50% - 8px), var(--gold) calc(50% + 8px), transparent calc(50% + 8px)),
+      linear-gradient(180deg, var(--gold-soft), var(--gold));
+    z-index:2;
+    transform-origin: 12px center;
+    transition: transform 0.7s cubic-bezier(.34,1.56,.64,1), opacity 0.5s ease 0.1s;
+  }
+  .gift-bow{
+    position:absolute;
+    top:-16px; left:50%;
+    transform: translateX(-50%);
+    font-size:1.4rem;
+    z-index:3;
+    transition: transform 0.6s ease, opacity 0.5s ease;
+  }
+  .gift-box.opened .gift-lid{
+    transform: translate(10px, -60px) rotate(-25deg);
+    opacity:0;
+  }
+  .gift-box.opened .gift-bow{
+    transform: translate(-50%, -70px) rotate(-25deg);
+    opacity:0;
+  }
+  .gift-box.opened .gift-body{
+    transform: scaleY(0.8);
+    opacity:0;
+  }
+  .gift-surprise{
+    position:absolute;
+    top:20px; left:50%;
+    transform: translateX(-50%) scale(0.3) translateY(20px);
+    text-align:center;
+    opacity:0;
+    transition: opacity 0.6s ease 0.35s, transform 0.6s cubic-bezier(.34,1.56,.64,1) 0.35s;
+    pointer-events:none;
+  }
+  .gift-wrap.opened .gift-surprise{
+    opacity:1;
+    transform: translateX(-50%) scale(1) translateY(0);
+  }
+  .teddy{ font-size:4rem; line-height:1; }
+  .gift-message{
+    margin-top:0.6rem;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.2rem;
+    color:var(--gold);
+    white-space:nowrap;
+  }
+  @keyframes shake{
+    0%, 100%{ transform: translateX(-50%) translateX(0); }
+    20%{ transform: translateX(-50%) translateX(-6px); }
+    40%{ transform: translateX(-50%) translateX(6px); }
+    60%{ transform: translateX(-50%) translateX(-4px); }
+    80%{ transform: translateX(-50%) translateX(4px); }
+  }
+  .gift-box.locked-shake{
+    animation: shake 0.5s ease;
+  }
+  .gift-hint{
+    text-align:center;
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:1.6rem;
+    transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  .gift-hint.locked-msg{
+    color: var(--rose);
+    letter-spacing:0.04em;
+    text-transform:none;
+    font-size:0.85rem;
+  }
+
+  footer{
+    text-align:center;
+    padding: 3rem 1.5rem 4rem;
+    color: var(--muted);
+    font-size:0.78rem;
+    position:relative; z-index:1;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .star, .shooting-star, .scroll-hint{ animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<section id="hero">
+  <span class="eyebrow">15 · August</span>
+  <h1 class="hero-title">For Ansumai</h1>
+  <p class="hero-sub">A small, quiet countdown to a very important day.</p>
+
+  <div class="countdown" id="countdown">
+    <div class="cd-unit"><div class="cd-num" id="cd-days">00</div><div class="cd-label">days</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num" id="cd-hours">00</div><div class="cd-label">hours</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num" id="cd-min">00</div><div class="cd-label">min</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-num" id="cd-sec">00</div><div class="cd-label">sec</div></div>
+  </div>
+
+  <div class="scroll-hint">scroll down ↓</div>
+</section>
+
+<!-- ============ LOVE LETTER ============ -->
+<section id="letter" class="reveal-on-scroll">
+  <span class="section-eyebrow">Field note 001</span>
+  <h2>My Ansumai <span class="heartbeat">♥</span></h2>
+  <div class="letter-card">
+    <div class="letter-body">
+      <p>Eleven years since we found each other — and somehow, this is the first birthday I get to celebrate as your husband. I don't take that lightly.</p>
+      <p>Thank you for staying, for growing with me, for letting me love you through all our seasons. I'm sorry for the moments I made you sad instead of happy — I've carried every one of them.</p>
+      <p>I want to keep showing up for you, in every phase, every year. Right now, all I want is for you to be happy.</p>
+    </div>
+    <p class="letter-sign">— Always yours, Himmat</p>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="notes" class="reveal-on-scroll">
+  <span class="section-eyebrow">Field note 002</span>
+  <h2>Us, in three lines</h2>
+  <div class="timeline">
+    <div class="entry">
+      <div class="entry-date">11 years</div>
+      <div class="entry-title">Since we found each other</div>
+      <div class="entry-body">Some things faded. All the good ones stayed.</div>
+    </div>
+    <div class="entry">
+      <div class="entry-date">This year</div>
+      <div class="entry-title">Our first birthday as husband and wife</div>
+      <div class="entry-body">A small milestone I get to keep, out of everything we've built.</div>
+    </div>
+    <div class="entry">
+      <div class="entry-date">Ahead</div>
+      <div class="entry-title">Every birthday after this one</div>
+      <div class="entry-body">And everything in between — I'm looking forward to all of it, with you.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVEAL (shows automatically on her birthday) ============ -->
+<section id="reveal-wrap" class="reveal-on-scroll">
+  <span class="section-eyebrow">Field note 003</span>
+  <h2 id="locked-note">This last note unlocks on August 15 — come back and check on the day. 🎁</h2>
+  <div id="reveal">
+    <div class="reveal-title">Happy Birthday, Ansumai 🎉</div>
+    <p class="reveal-sub">I'm so happy, so lucky, and so ready for everything still ahead — with you.</p>
+  </div>
+</section>
+
+<!-- ============ GIFT BOX ============ -->
+<section id="gift" class="reveal-on-scroll" style="text-align:center;">
+  <span class="section-eyebrow">Field note 004</span>
+  <h2>One more thing</h2>
+  <div class="gift-wrap" id="giftWrap">
+    <div class="gift-box" id="giftBox" role="button" tabindex="0" aria-label="Open your gift">
+      <div class="gift-bow">🎀</div>
+      <div class="gift-lid"></div>
+      <div class="gift-body"></div>
+    </div>
+    <div class="gift-surprise" id="giftSurprise">
+      <div class="teddy">🧸</div>
+      <div class="gift-message">Happy Birthday, Ansumai</div>
+    </div>
+  </div>
+  <p class="gift-hint" id="giftHint">tap the box</p>
+</section>
+
+<footer>made quietly, for one person only.</footer>
+
+<script>
+  // ---------- Starfield ----------
+  const starsContainer = document.getElementById('stars');
+  const STAR_COUNT = 90;
+  for(let i=0;i<STAR_COUNT;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random()*2 + 1;
+    s.style.width = size+'px';
+    s.style.height = size+'px';
+    s.style.top = Math.random()*100+'vh';
+    s.style.left = Math.random()*100+'vw';
+    s.style.animationDelay = (Math.random()*4)+'s';
+    starsContainer.appendChild(s);
+  }
+  for(let i=0;i<2;i++){
+    const sh = document.createElement('div');
+    sh.className = 'shooting-star';
+    sh.style.top = (Math.random()*40)+'vh';
+    sh.style.left = (Math.random()*20)+'vw';
+    sh.style.animationDelay = (i*4 + Math.random()*3)+'s';
+    starsContainer.appendChild(sh);
+  }
+
+  // ---------- Floating hearts (ambient) ----------
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const HEART_COUNT = 10;
+    for(let i=0;i<HEART_COUNT;i++){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = '♥';
+      h.style.left = Math.random()*100+'vw';
+      h.style.setProperty('--drift', (Math.random()*60-30)+'px');
+      h.style.animationDuration = (Math.random()*8+10)+'s';
+      h.style.animationDelay = (Math.random()*10)+'s';
+      h.style.fontSize = (Math.random()*8+10)+'px';
+      starsContainer.appendChild(h);
+    }
+  }
+
+  // ---------- Scroll-reveal for sections ----------
+  const revealTargets = document.querySelectorAll('.reveal-on-scroll');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealTargets.forEach(t=> io.observe(t));
+  } else {
+    revealTargets.forEach(t=> t.classList.add('in-view'));
+  }
+
+  // ---------- Countdown ----------
+  // Her birthday: August 15 (year rolls forward automatically once it passes)
+  function nextBirthday(){
+    const now = new Date();
+    let year = now.getFullYear();
+    let target = new Date(year, 7, 15, 0, 0, 0); // month is 0-indexed: 7 = August
+    if(now > target){
+      target = new Date(year+1, 7, 15, 0, 0, 0);
+    }
+    return target;
+  }
+
+  const target = nextBirthday();
+  const daysEl = document.getElementById('cd-days');
+  const hoursEl = document.getElementById('cd-hours');
+  const minEl = document.getElementById('cd-min');
+  const secEl = document.getElementById('cd-sec');
+  const countdownBox = document.getElementById('countdown');
+  const revealBox = document.getElementById('reveal');
+  const lockedNote = document.getElementById('locked-note');
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function tick(){
+    const now = new Date();
+    const diff = target - now;
+
+    // Is it her birthday right now? (same month/day, this year)
+    const isBirthdayToday = now.getMonth() === 7 && now.getDate() === 15;
+
+    if(diff <= 0 || isBirthdayToday){
+      countdownBox.style.display = 'none';
+      lockedNote.style.display = 'none';
+      revealBox.classList.add('show');
+      clearInterval(timer);
+      launchConfetti();
+      return;
+    }
+
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff / (1000*60*60)) % 24);
+    const m = Math.floor((diff / (1000*60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    daysEl.textContent = pad(d);
+    hoursEl.textContent = pad(h);
+    minEl.textContent = pad(m);
+    secEl.textContent = pad(s);
+  }
+
+  const timer = setInterval(tick, 1000);
+  tick();
+
+  // ---------- Confetti (fires once, on reveal) ----------
+  function launchConfetti(count){
+    count = count || 80;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const colors = ['#e8b454', '#e2726e', '#f3d189', '#f4f1e8'];
+    for(let i=0;i<count;i++){
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      const size = Math.random()*8+4;
+      piece.style.width = size+'px';
+      piece.style.height = (size*0.4)+'px';
+      piece.style.left = Math.random()*100+'vw';
+      piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+      piece.style.transform = `rotate(${Math.random()*360}deg)`;
+      document.body.appendChild(piece);
+
+      const duration = Math.random()*2.5 + 2.5;
+      const drift = (Math.random()-0.5)*200;
+      piece.animate([
+        { transform: `translate(0,0) rotate(0deg)`, opacity:1 },
+        { transform: `translate(${drift}px, 110vh) rotate(${Math.random()*720}deg)`, opacity:0.9 }
+      ], { duration: duration*1000, easing:'ease-in', fill:'forwards' });
+
+      setTimeout(()=> piece.remove(), duration*1000 + 200);
+    }
+  }
+
+  // ---------- Gift box ----------
+  const giftWrap = document.getElementById('giftWrap');
+  const giftBox = document.getElementById('giftBox');
+  const giftHint = document.getElementById('giftHint');
+  const defaultHintText = giftHint.textContent;
+  let lockedMessageTimer = null;
+
+  function isHerBirthdayToday(){
+    const now = new Date();
+    return now.getMonth() === 7 && now.getDate() === 15; // August 15
+  }
+
+  function showLockedMessage(){
+    clearTimeout(lockedMessageTimer);
+    giftHint.textContent = 'Come back on August 15 🎁';
+    giftHint.classList.add('locked-msg');
+    giftBox.classList.remove('locked-shake');
+    void giftBox.offsetWidth; // restart animation
+    giftBox.classList.add('locked-shake');
+    lockedMessageTimer = setTimeout(()=>{
+      giftHint.textContent = defaultHintText;
+      giftHint.classList.remove('locked-msg');
+    }, 2600);
+  }
+
+  function openGift(){
+    if(giftWrap.classList.contains('opened')) return;
+    if(!isHerBirthdayToday()){
+      showLockedMessage();
+      return;
+    }
+    giftWrap.classList.add('opened');
+    giftBox.classList.add('opened');
+    giftHint.style.opacity = '0';
+    launchConfetti(36);
+  }
+
+  giftBox.addEventListener('click', openGift);
+  giftBox.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      openGift();
+    }
+  });
+
+</script>
+
+</body>
+</html>
